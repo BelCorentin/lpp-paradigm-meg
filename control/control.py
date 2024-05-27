@@ -59,6 +59,8 @@ import meg_triggers
 import sys
 import os
 import random
+import pandas as pd
+
 
 def generate_list(n):
     half_n = n // 2
@@ -191,3 +193,22 @@ meg_triggers.send_stop(p1)
 io.Keyboard.process_control_keys()
 
 control.end()
+
+# Save the answers of the subject
+
+# Ask for the answers directly in the command line
+# On a scale from 1 to 5, how easy was it for you to imagine about the given theme?
+# On a scale from 1 to 5, how well do you think you managed to ignore the audio?
+# On a scale from 1 to 5, how well do you think you managed to understand the LPP text?
+
+theme_imagination = int(input('On a scale from 1 to 5, how easy was it for you to imagine about the given theme? '))
+audio_ignoring = int(input('On a scale from 1 to 5, how well do you think you managed to ignore the audio? '))
+
+# Load the txt file with the questions about the LPP text
+df_questions = pd.read_csv('questions_lpp.csv')
+
+# TODO
+lpp_text = int(input(df_questions.iloc[run]['question']))
+
+with open(f'data/answers_{sub}.csv', 'a') as f:
+    f.write(f'{sub},{run},{theme_imagination},{audio_ignoring},{lpp_text}\n')
